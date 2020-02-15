@@ -1,15 +1,23 @@
 #include "Application.h"
 
 Meson::CApplication::CApplication(INT width, INT height, const CHAR* title) {
-	mWindow = CreateWindow(width, height, title);
+	mpGlfwWindow = Glfw::CreateWindow(width, height, title);
+	mpVulkanInstance = Vulkan::CreateInstance(title);
 }
 
 Meson::CApplication::~CApplication() {
-	DestroyWindow(mWindow);
+	Vulkan::DestroyInstance(mpVulkanInstance);
+	Glfw::DestroyWindow(mpGlfwWindow);
 }
 
 void Meson::CApplication::Run() {
-	while (!glfwWindowShouldClose(mWindow)) {
+	if (!mpGlfwWindow || !mpVulkanInstance) return;
+
+#ifndef NDEBUG
+	Vulkan::CValidationLayer mValidationLayer(mpVulkanInstance);
+#endif
+
+	while (!glfwWindowShouldClose(mpGlfwWindow)) {
 		glfwPollEvents();
 	}
 }

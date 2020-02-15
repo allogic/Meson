@@ -106,6 +106,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -137,6 +138,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -150,10 +152,14 @@
     <ClInclude Include="Include\Core.h" />
     <ClInclude Include="Include\Meson.h" />
     <ClInclude Include="Include\Types.h" />
-    <ClInclude Include="Include\Window.h" />
+    <ClInclude Include="Include\Utils.h" />
+    <ClInclude Include="Include\Vulkan\VulkanValidationLayer.h" />
+    <ClInclude Include="Include\Vulkan\VulkanInstance.h" />
+    <ClInclude Include="Include\Glfw\GlfwWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\Vulkan\VulkanValidationLayer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

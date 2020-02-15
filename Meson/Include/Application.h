@@ -1,6 +1,9 @@
 #pragma once
 
-#include "Window.h"
+#include "Glfw/GlfwWindow.h"
+
+#include "Vulkan/VulkanInstance.h"
+#include "Vulkan/VulkanValidationLayer.h"
 
 #include <vulkan/vulkan.h>
 
@@ -21,6 +24,7 @@ namespace Meson {
 		void Run();
 
 	private:
-		GLFWwindow* mWindow = nullptr;
+		GLFWwindow* mpGlfwWindow = nullptr;
+		VkInstance mpVulkanInstance = nullptr;
 	};
 }
