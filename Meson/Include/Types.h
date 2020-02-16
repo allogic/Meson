@@ -1,14 +1,28 @@
 #pragma once
 
-// typedef all prefix meson
+typedef char MsBool8;
+typedef short MsBool16;
+typedef long MsBool32;
 
-#define BOOL bool
+typedef unsigned char MsUBool8;
+typedef unsigned short MsUBool16;
+typedef unsigned long MsUBool32;
 
-#define INT int
+typedef char MsChar8;
+typedef short MsChar16;
+typedef long MsChar32;
 
-#define UINT unsigned int
-#define UINT32 uint32_t
+typedef unsigned char MsUChar8;
+typedef unsigned short MsUChar16;
+typedef unsigned long MsUChar32;
 
-#define CHAR char
+typedef char MsInt8;
+typedef short MsInt16;
+typedef int MsInt32;
 
-#define UCHAR unsigned char
+typedef unsigned char MsUInt8;
+typedef unsigned short MsUInt16;
+typedef unsigned int MsUInt32;
+
+typedef float MsFloat32;
+typedef double MsFloat64;

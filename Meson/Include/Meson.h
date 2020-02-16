@@ -1,14 +1,25 @@
 #pragma once
 
+/*
+* TODO:
+*/
+
 #include "Core.h"
-#include "Types.h"
+
+#include <vulkan/vulkan.h>
+
+#include "Glfw/GlfwWindow.h"
+
+#include "Vulkan/VulkanCallbacks.h"
+#include "Vulkan/VulkanValidationLayer.h"
+
 #include "Application.h"
 
 extern Meson::CApplication* Create();
 
 #define MESON_CREATE_APP(CLASS) Meson::CApplication* Create() { return new CLASS; }
 
-int main(INT argc, CHAR** argv) {
+int main(MsInt32 argc, MsChar8** argv) {
 	try {
 		auto* app = Create();
 

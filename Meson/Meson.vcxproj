@@ -153,12 +153,16 @@
     <ClInclude Include="Include\Meson.h" />
     <ClInclude Include="Include\Types.h" />
     <ClInclude Include="Include\Utils.h" />
+    <ClInclude Include="Include\Vulkan\VulkanCallbacks.h" />
     <ClInclude Include="Include\Vulkan\VulkanValidationLayer.h" />
     <ClInclude Include="Include\Vulkan\VulkanInstance.h" />
     <ClInclude Include="Include\Glfw\GlfwWindow.h" />
+    <ClInclude Include="Include\Vulkan\VulkanValidationLayers.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\Glfw\GlfwWindow.cpp" />
+    <ClCompile Include="Source\Vulkan\VulkanInstance.cpp" />
     <ClCompile Include="Source\Vulkan\VulkanValidationLayer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <stdint.h>
-
 #include <cstdlib>
 #include <array>
 #include <vector>
@@ -9,6 +7,7 @@
 #include <string>
 #include <chrono>
 #include <exception>
+#include <memory>
 
 #define MESON_TRACE(MSG) std::cout << __FILE__ << ':' << __LINE__ << ' ' << MSG << std::endl;
 #define MESON_TRACE_IF(EXPR, MSG) if (EXPR) { MESON_TRACE(MSG); }

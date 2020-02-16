@@ -6,30 +6,16 @@
 #include <glfw/glfw3.h>
 
 namespace Meson::Glfw {
-	static auto* CreateWindow(INT width, INT height, const CHAR* title) {
-		MESON_TRACE_IF(
-			glfwInit() == GLFW_FALSE,
-			"Failed initialising glfw"
-		);
+	class CWindow final {
+	public:
+		CWindow(MsUInt32 width, MsUInt32 height, const std::string& title);
 
-		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+		~CWindow();
 
-		auto* window = glfwCreateWindow(width, height, title, nullptr, nullptr);
+	public:
+		inline auto* Ptr() const { return mpWindow; }
 
-		MESON_TRACE_IF(
-			window == nullptr,
-			"Failed creating glfw window"
-		);
-
-		glfwMakeContextCurrent(window);
-
-		return window;
-	}
-
-	static void DestroyWindow(GLFWwindow* window) {
-		glfwDestroyWindow(window);
-
-		glfwTerminate();
-	}
+	private:
+		GLFWwindow* mpWindow;
+	};
 }

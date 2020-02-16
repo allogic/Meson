@@ -1,30 +1,22 @@
 #pragma once
 
 #include "Glfw/GlfwWindow.h"
-
 #include "Vulkan/VulkanInstance.h"
-#include "Vulkan/VulkanValidationLayer.h"
 
-#include <vulkan/vulkan.h>
-
-#include <glfw/glfw3.h>
-
-int main(INT argc, CHAR** argv);
+int main(MsInt32 argc, MsChar8** argv);
 
 namespace Meson {
 	class CApplication {
-		friend int ::main(INT argc, CHAR** argv);
+		friend int ::main(MsInt32 argc, MsChar8** argv);
 
 	public:
-		CApplication(INT width, INT height, const CHAR* title);
-
-		virtual ~CApplication();
+		CApplication(MsUInt32 width, MsUInt32 height, const std::string& title);
 
 	public:
 		void Run();
 
 	private:
-		GLFWwindow* mpGlfwWindow = nullptr;
-		VkInstance mpVulkanInstance = nullptr;
+		std::unique_ptr<Glfw::CWindow> mpGlfwWindow = nullptr;
+		std::unique_ptr<Vulkan::CInstance> mpVulkanInstance = nullptr;
 	};
 }
