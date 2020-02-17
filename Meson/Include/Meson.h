@@ -2,6 +2,7 @@
 
 /*
 * TODO:
+* further improvement VulkanValidationLayer.h -> auto dynamic linking process
 */
 
 #include "Core.h"
@@ -9,9 +10,6 @@
 #include <vulkan/vulkan.h>
 
 #include "Glfw/GlfwWindow.h"
-
-#include "Vulkan/VulkanCallbacks.h"
-#include "Vulkan/VulkanValidationLayer.h"
 
 #include "Application.h"
 

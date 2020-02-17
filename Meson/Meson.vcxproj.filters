@@ -39,10 +39,7 @@
     <ClInclude Include="Include\Utils.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Vulkan\VulkanCallbacks.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Vulkan\VulkanValidationLayers.h">
+    <ClInclude Include="Include\Vulkan\VulkanCallback.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

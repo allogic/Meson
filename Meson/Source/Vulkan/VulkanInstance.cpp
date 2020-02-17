@@ -1,6 +1,6 @@
 #include "Vulkan/VulkanInstance.h"
 
-#include "Vulkan/VulkanValidationLayers.h"
+//#include "Vulkan/VulkanCallback.h"
 
 Meson::Vulkan::CInstance::CInstance(const std::string& title) {
 #ifndef NDEBUG
@@ -29,15 +29,21 @@ Meson::Vulkan::CInstance::CInstance(const std::string& title) {
 	mCreateInfo.enabledLayerCount = 0;
 	mCreateInfo.pNext = nullptr;
 #else
-	mCreateInfo.enabledLayerCount = static_cast<MsInt32>(MsVkValidationLayers.size());
-	mCreateInfo.ppEnabledLayerNames = MsVkValidationLayers.data();
-	mCreateInfo.pNext = &CValidationLayer::CreateMessageCreateInfo();
+	VkDebugUtilsMessengerCreateInfoEXT debugMessageCreateInfoExt;
+
+	mCreateInfo.enabledLayerCount = static_cast<MsInt32>(ActiveValidationLayers.size());
+	mCreateInfo.ppEnabledLayerNames = ActiveValidationLayers.data();
+	mCreateInfo.pNext = &LinkDebugMessenger(debugMessageCreateInfoExt);
 #endif
 
 	MESON_TRACE_IF(
-		vkCreateInstance(&createInfo, nullptr, &mpInstance) != VK_SUCCESS,
+		vkCreateInstance(&mCreateInfo, nullptr, &mpInstance) != VK_SUCCESS,
 		"Failed creating vulkan instance"
 	);
+
+#ifndef NDEBUG
+	mValidationLayer.MapDebugUtilsMessengerCreateInfo(*this);
+#endif
 }
 
 Meson::Vulkan::CInstance::~CInstance() {

@@ -4,7 +4,6 @@
 
 #include <vulkan/vulkan.h>
 
-#ifndef NDEBUG
 VKAPI_ATTR VkBool32 VKAPI_CALL MsVkDebugCallback(
 	VkDebugUtilsMessageSeverityFlagBitsEXT messeageSeverity,
 	VkDebugUtilsMessageTypeFlagsEXT messageType,
@@ -14,4 +13,3 @@ VKAPI_ATTR VkBool32 VKAPI_CALL MsVkDebugCallback(
 
 	return VK_FALSE;
 }
-#endif

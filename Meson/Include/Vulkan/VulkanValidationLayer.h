@@ -3,21 +3,23 @@
 #include "../Types.h"
 #include "../Core.h"
 
-#include "VulkanInstance.h"
-
 #include <vulkan/vulkan.h>
 
 namespace Meson::Vulkan {
+	class CInstance;
+
 	class CValidationLayer final {
 	public:
-		CValidationLayer(const CInstance& instance);
+		CValidationLayer() = default;
 
+	public:
 		VkResult CreateDebugUtilsMessengerExtension(
 			VkInstance pInstance,
 			const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo,
 			const VkAllocationCallbacks* pAllocator,
 			VkDebugUtilsMessengerEXT* pDebugMessenger
 		);
+		inline VkDebugUtilsMessengerEXT GetDebugMessengerPtr() { return mpDebugMessenger; }
 
 	private:
 		VkDebugUtilsMessengerEXT mpDebugMessenger = nullptr;
