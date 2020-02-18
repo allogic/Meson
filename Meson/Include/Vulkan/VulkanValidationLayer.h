@@ -2,6 +2,7 @@
 
 #include "../Types.h"
 #include "../Core.h"
+#include "../ResultCodes.h"
 
 #include <vulkan/vulkan.h>
 
@@ -13,17 +14,20 @@ namespace Meson::Vulkan {
 		CValidationLayer() = default;
 
 	public:
-		VkResult CreateDebugUtilsMessengerExtension(
+		MsResult CreateDebugUtilsMessengerExtension(
 			VkInstance pInstance,
 			const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo,
-			const VkAllocationCallbacks* pAllocator,
-			VkDebugUtilsMessengerEXT* pDebugMessenger
+			const VkAllocationCallbacks* pAllocator
 		);
-		inline VkDebugUtilsMessengerEXT GetDebugMessengerPtr() { return mpDebugMessenger; }
+		MsResult DestroyDebugUtilsMessengerExtension(
+			VkInstance pInstance,
+			const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo,
+			const VkAllocationCallbacks* pAllocator
+		);
+
+		inline VkDebugUtilsMessengerEXT& GetDebugUtilsMessengerPtr() { return mpDebugMessenger; }
 
 	private:
 		VkDebugUtilsMessengerEXT mpDebugMessenger = nullptr;
-
-		VkDebugUtilsMessengerCreateInfoEXT mCreateInfo;
 	};
 }

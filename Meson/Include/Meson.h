@@ -3,13 +3,12 @@
 /*
 * TODO:
 * further improvement VulkanValidationLayer.h -> auto dynamic linking process
+* remove `p` from all vulkan member/arg variable names
+* refactor result codes -> like Types.h
 */
 
+#include "Types.h"
 #include "Core.h"
-
-#include <vulkan/vulkan.h>
-
-#include "Glfw/GlfwWindow.h"
 
 #include "Application.h"
 

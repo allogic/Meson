@@ -7,10 +7,12 @@ Meson::CApplication::CApplication(MsUInt32 width, MsUInt32 height, const std::st
 	mpVulkanInstance = std::make_unique<Vulkan::CInstance>(title);
 }
 
-void Meson::CApplication::Run() {
-	if (!mpGlfwWindow || !mpVulkanInstance) return;
+MsResult Meson::CApplication::Run() {
+	if (!mpGlfwWindow || !mpVulkanInstance) return MsResult::FAILED;
 
 	while (!glfwWindowShouldClose(mpGlfwWindow->Ptr())) {
 		glfwPollEvents();
 	}
+
+	return MsResult::SUCCESS;
 }

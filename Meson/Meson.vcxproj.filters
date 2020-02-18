@@ -39,7 +39,7 @@
     <ClInclude Include="Include\Utils.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Vulkan\VulkanCallback.h">
+    <ClInclude Include="Include\ResultCodes.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

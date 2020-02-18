@@ -9,7 +9,6 @@ namespace Meson::Glfw {
 	class CWindow final {
 	public:
 		CWindow(MsUInt32 width, MsUInt32 height, const std::string& title);
-
 		~CWindow();
 
 	public:

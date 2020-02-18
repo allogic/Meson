@@ -2,10 +2,20 @@
 
 #include "../Core.h"
 #include "../Types.h"
+#include "../ResultCodes.h"
 
 #ifndef NDEBUG
 #include "VulkanValidationLayer.h"
-#include "VulkanCallback.h"
+
+static VkBool32 VKAPI_CALL MsVkDebugCallback(
+	VkDebugUtilsMessageSeverityFlagBitsEXT messeageSeverity,
+	VkDebugUtilsMessageTypeFlagsEXT messageType,
+	const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
+	void* pUserData) {
+	MESON_TRACE(pCallbackData->pMessage);
+
+	return VK_FALSE;
+}
 #endif
 
 #include <vulkan/vulkan.h>
@@ -26,91 +36,24 @@ namespace Meson::Vulkan {
 	public:
 		inline auto* Ptr() const { return mpInstance; }
 
-	public:
-		static auto CheckValidationLayerSupport() {
-			MsUInt32 layerCount;
-
-			vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
-
-			std::vector<VkLayerProperties> availableLayers(layerCount);
-			vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
-
-			for (const auto* layerName : ActiveValidationLayers) {
-				MsBool8 layerFound = false;
-
-				for (const auto& layerProperties : availableLayers) {
-					if (std::strcmp(layerName, layerProperties.layerName) == 0) {
-						layerFound = true;
-
-						break;
-					}
-				}
-
-				if (!layerFound) return false;
-			}
-
-			return true;
-		}
-		static auto GetRequiredExtensions() {
-			MsUInt32 glfwExtensionCount = 0;
-
-			const MsChar8** glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
-
-			std::vector<const MsChar8*> extensions(glfwExtensions, glfwExtensions + glfwExtensionCount);
-
-#ifndef NDEBUG
-			extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
-#endif
-
-			return extensions;
-		}
+	private:
+		std::vector<const MsChar8*> GetRequiredExtensions();
+		MsResult GetPhysicalDevice();
+		MsResult CheckPhysicalDeviceCapability(VkPhysicalDevice device);
+		MsResult CheckQueueFamilies(VkPhysicalDevice device);
 
 	private:
 		VkApplicationInfo mAppInfo;
 		VkInstanceCreateInfo mCreateInfo;
-
 		VkInstance mpInstance;
+		VkPhysicalDevice mPhysicalDevice;
 
-#ifndef DEBUG
-	public:
-		static auto& LinkDebugMessenger(VkDebugUtilsMessengerCreateInfoEXT& createInfo) {
-			createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
-			createInfo.messageSeverity =
-				VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT |
-				VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT |
-				VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
-			createInfo.messageType =
-				VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT |
-				VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT |
-				VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
-			createInfo.pfnUserCallback = MsVkDebugCallback;
-
-			return createInfo;
-		}
+#ifndef NDEBUG
+	private:
+		MsResult CheckValidationLayerSupport();
 
 	private:
-		void MapDebugMessenger(
-			CValidationLayer& validationLayer,
-			const VkInstance pInstance,
-			VkDebugUtilsMessengerCreateInfoEXT& createInfo
-		) {
-			MESON_TRACE_IF(
-				mValidationLayer.CreateDebugUtilsMessengerExtension(
-					pInstance,
-					&LinkDebugMessenger(createInfo),
-					nullptr,
-					&mValidationLayer.GetDebugMessenger()) != VK_SUCCESS,
-				"Failed mapping debug messenger"
-			);
-
-			validationLayer.CreateDebugUtilsMessengerExtension(
-				pInstance,
-				&LinkDebugMessenger(createInfo),
-				nullptr,
-				&validationLayer.GetDebugMessengerPtr());
-		}
-
-	private:
+		VkDebugUtilsMessengerCreateInfoEXT mDebugUtilsMessageCreateInfoExt;
 		CValidationLayer mValidationLayer;
 #endif
 	};

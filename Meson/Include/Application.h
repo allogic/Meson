@@ -1,5 +1,9 @@
 #pragma once
 
+#include "Types.h"
+#include "Core.h"
+#include "ResultCodes.h"
+
 #include "Glfw/GlfwWindow.h"
 #include "Vulkan/VulkanInstance.h"
 
@@ -13,7 +17,7 @@ namespace Meson {
 		CApplication(MsUInt32 width, MsUInt32 height, const std::string& title);
 
 	public:
-		void Run();
+		MsResult Run();
 
 	private:
 		std::unique_ptr<Glfw::CWindow> mpGlfwWindow = nullptr;
