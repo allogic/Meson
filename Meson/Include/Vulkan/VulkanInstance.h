@@ -4,7 +4,11 @@
 #include "../Types.h"
 #include "../ResultCodes.h"
 
+#include "VulkanPhysicalDevice.h"
+#include "VulkanLogicalDevice.h"
+
 #ifndef NDEBUG
+#include "VulkanValidationLayers.h"
 #include "VulkanValidationLayer.h"
 
 static VkBool32 VKAPI_CALL MsVkDebugCallback(
@@ -25,28 +29,20 @@ static VkBool32 VKAPI_CALL MsVkDebugCallback(
 namespace Meson::Vulkan {
 	class CInstance final {
 	public:
-		constexpr static const std::array<const MsChar8*, 1> ActiveValidationLayers = {
-			"VK_LAYER_KHRONOS_validation",
-		};
-
-	public:
 		CInstance(const std::string& title);
 		~CInstance();
 
-	public:
-		inline auto* Ptr() const { return mpInstance; }
-
 	private:
 		std::vector<const MsChar8*> GetRequiredExtensions();
-		MsResult GetPhysicalDevice();
-		MsResult CheckPhysicalDeviceCapability(VkPhysicalDevice device);
-		MsResult CheckQueueFamilies(VkPhysicalDevice device);
 
 	private:
 		VkApplicationInfo mAppInfo;
 		VkInstanceCreateInfo mCreateInfo;
-		VkInstance mpInstance;
-		VkPhysicalDevice mPhysicalDevice;
+
+		VkInstance mInstance;
+
+		CVulkanPhysicalDevice* mpPhysicalDevice;
+		CVulkanLogicalDevice* mpLogicalDevice;
 
 #ifndef NDEBUG
 	private:

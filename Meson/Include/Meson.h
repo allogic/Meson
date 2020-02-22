@@ -2,9 +2,11 @@
 
 /*
 * TODO:
-* further improvement VulkanValidationLayer.h -> auto dynamic linking process
-* remove `p` from all vulkan member/arg variable names
-* refactor result codes -> like Types.h
+*  further improvement VulkanValidationLayer.h -> auto dynamic linking process
+*  remove `p` from all vulkan member/arg variable names
+*  refactor result codes -> like Types.h
+*  refactor CVulkanInstance -> C++14/11
+*  write custom allocator for vulkan like types and or internals
 */
 
 #include "Types.h"

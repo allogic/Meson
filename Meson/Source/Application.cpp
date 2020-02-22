@@ -3,8 +3,13 @@
 #include "Vulkan/VulkanValidationLayer.h"
 
 Meson::CApplication::CApplication(MsUInt32 width, MsUInt32 height, const std::string& title) {
-	mpGlfwWindow = std::make_unique<Glfw::CWindow>(width, height, title);
-	mpVulkanInstance = std::make_unique<Vulkan::CInstance>(title);
+	mpGlfwWindow = new Glfw::CWindow(width, height, title);
+	mpVulkanInstance = new Vulkan::CInstance(title);
+}
+
+Meson::CApplication::~CApplication() {
+	delete mpVulkanInstance;
+	delete mpGlfwWindow;
 }
 
 MsResult Meson::CApplication::Run() {

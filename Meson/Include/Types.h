@@ -1,12 +1,8 @@
 #pragma once
 
-typedef char MsBool8;
-typedef short MsBool16;
-typedef long MsBool32;
-
-typedef unsigned char MsUBool8;
-typedef unsigned short MsUBool16;
-typedef unsigned long MsUBool32;
+typedef unsigned char MsBool8;
+typedef unsigned short MsBool16;
+typedef unsigned long MsBool32;
 
 typedef char MsChar8;
 typedef short MsChar16;
