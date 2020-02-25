@@ -1,6 +1,6 @@
 #include "Glfw/GlfwWindow.h"
 
-Meson::Glfw::CWindow::CWindow(MsUInt32 width, MsUInt32 height, const std::string& title) {
+Meson::Glfw::CGlfwWindow::CGlfwWindow(MsUInt32 width, MsUInt32 height, const std::string& title) {
 	MESON_TRACE_IF(
 		glfwInit() == GLFW_FALSE,
 		"Failed initialising glfw"
@@ -25,7 +25,7 @@ Meson::Glfw::CWindow::CWindow(MsUInt32 width, MsUInt32 height, const std::string
 	glfwMakeContextCurrent(mpWindow);
 }
 
-Meson::Glfw::CWindow::~CWindow() {
+Meson::Glfw::CGlfwWindow::~CGlfwWindow() {
 	glfwDestroyWindow(mpWindow);
 
 	glfwTerminate();

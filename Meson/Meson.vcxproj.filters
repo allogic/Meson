@@ -51,6 +51,9 @@
     <ClInclude Include="Include\Vulkan\VulkanValidationLayers.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Include\Vulkan\VulkanSurface.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -69,6 +72,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Source\Vulkan\VulkanLogicalDevice.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vulkan\VulkanSurface.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

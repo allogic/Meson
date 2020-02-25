@@ -19,7 +19,7 @@ namespace Meson {
 		MsResult Run();
 
 	private:
-		Glfw::CWindow* mpGlfwWindow = nullptr;
-		Vulkan::CInstance* mpVulkanInstance = nullptr;
+		Glfw::CGlfwWindow* mpGlfwWindow = nullptr;
+		Vulkan::CVulkanInstance* mpVulkanInstance = nullptr;
 	};
 }

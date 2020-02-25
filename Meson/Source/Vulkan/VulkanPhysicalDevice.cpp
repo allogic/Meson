@@ -1,7 +1,8 @@
 #include "Vulkan/VulkanPhysicalDevice.h"
 
-Meson::Vulkan::CVulkanPhysicalDevice::CVulkanPhysicalDevice(const VkInstance& instance)
-	: mInstance(instance) {
+Meson::Vulkan::CVulkanPhysicalDevice::CVulkanPhysicalDevice(const VkInstance& instance, const VkSurfaceKHR& surface)
+	: mInstance(instance)
+	, mSurface(surface) {
 	MESON_TRACE_IF(
 		GetPhysicalDevices() != MsResult::SUCCESS,
 		"Failed getting physical devices"
@@ -27,6 +28,11 @@ Meson::Vulkan::SQueueFamilyIndices Meson::Vulkan::CVulkanPhysicalDevice::FindQue
 	for (const auto& queueFamily : queueFamilies) {
 		if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT)
 			indices.graphicsFamily = i;
+
+		VkBool32 presentSupport = false;
+		vkGetPhysicalDeviceSurfaceSupportKHR(mDevice, i, mSurface, &presentSupport);
+
+		if (presentSupport) indices.presentFamily = i;
 
 		if (indices.Complete()) break;
 

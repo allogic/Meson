@@ -9,19 +9,24 @@
 namespace Meson::Vulkan {
 	struct SQueueFamilyIndices {
 		std::optional<MsUInt32> graphicsFamily;
+		std::optional<MsUInt32> presentFamily;
 
-		inline bool Complete() const { return graphicsFamily.has_value(); }
+		inline bool Complete() const {
+			return
+				graphicsFamily.has_value() &&
+				presentFamily.has_value();
+		}
 	};
 
 	class CVulkanPhysicalDevice final {
 	public:
-		CVulkanPhysicalDevice(const VkInstance& instance);
+		CVulkanPhysicalDevice(const VkInstance& instance, const VkSurfaceKHR& surface);
 
 	public:
 		inline const VkPhysicalDevice& Device() const { return mDevice; }
 
 	public:
-		static SQueueFamilyIndices FindQueueFamilies(VkPhysicalDevice device);
+		SQueueFamilyIndices FindQueueFamilies(VkPhysicalDevice device);
 
 	private:
 		MsResult GetPhysicalDevices();
@@ -30,6 +35,7 @@ namespace Meson::Vulkan {
 
 	private:
 		const VkInstance& mInstance;
+		const VkSurfaceKHR& mSurface;
 
 		std::vector<VkPhysicalDevice> mDevices;
 

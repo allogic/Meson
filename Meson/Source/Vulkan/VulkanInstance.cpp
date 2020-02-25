@@ -1,6 +1,6 @@
 #include "Vulkan/VulkanInstance.h"
 
-Meson::Vulkan::CInstance::CInstance(const std::string& title) {
+Meson::Vulkan::CVulkanInstance::CVulkanInstance(GLFWwindow* pWindow, const std::string& title) {
 #ifndef NDEBUG
 	MESON_TRACE_IF(
 		CheckValidationLayerSupport() == MsResult::FAILED,
@@ -8,15 +8,17 @@ Meson::Vulkan::CInstance::CInstance(const std::string& title) {
 	);
 #endif
 
-	mAppInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
-	mAppInfo.pApplicationName = title.c_str();
-	mAppInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
-	mAppInfo.pEngineName = title.c_str();
-	mAppInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
-	mAppInfo.apiVersion = VK_API_VERSION_1_0;
+	VkApplicationInfo appInfo{};
+	appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+	appInfo.pApplicationName = title.c_str();
+	appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
+	appInfo.pEngineName = title.c_str();
+	appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
+	appInfo.apiVersion = VK_API_VERSION_1_0;
 
-	mCreateInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-	mCreateInfo.pApplicationInfo = &mAppInfo;
+	VkInstanceCreateInfo createInfo{};
+	createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+	createInfo.pApplicationInfo = &appInfo;
 
 	auto extensions = GetRequiredExtensions();
 
@@ -24,12 +26,12 @@ Meson::Vulkan::CInstance::CInstance(const std::string& title) {
 	extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
 #endif
 
-	mCreateInfo.enabledExtensionCount = static_cast<MsInt32>(extensions.size());
-	mCreateInfo.ppEnabledExtensionNames = extensions.data();
+	createInfo.enabledExtensionCount = static_cast<MsInt32>(extensions.size());
+	createInfo.ppEnabledExtensionNames = extensions.data();
 
 #ifdef NDEBUG
-	mCreateInfo.enabledLayerCount = 0;
-	mCreateInfo.pNext = nullptr;
+	createInfo.enabledLayerCount = 0;
+	createInfo.pNext = nullptr;
 #else
 	mDebugUtilsMessageCreateInfoExt.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
 	mDebugUtilsMessageCreateInfoExt.messageSeverity =
@@ -42,13 +44,13 @@ Meson::Vulkan::CInstance::CInstance(const std::string& title) {
 		VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
 	mDebugUtilsMessageCreateInfoExt.pfnUserCallback = MsVkDebugCallback;
 
-	mCreateInfo.enabledLayerCount = static_cast<MsUInt32>(ActiveValidationLayers.size());
-	mCreateInfo.ppEnabledLayerNames = ActiveValidationLayers.data();
-	mCreateInfo.pNext = &mDebugUtilsMessageCreateInfoExt;
+	createInfo.enabledLayerCount = static_cast<MsUInt32>(ActiveValidationLayers.size());
+	createInfo.ppEnabledLayerNames = ActiveValidationLayers.data();
+	createInfo.pNext = &mDebugUtilsMessageCreateInfoExt;
 #endif
 
 	MESON_TRACE_IF(
-		vkCreateInstance(&mCreateInfo, nullptr, &mInstance) != VkResult::VK_SUCCESS,
+		vkCreateInstance(&createInfo, nullptr, &mInstance) != VkResult::VK_SUCCESS,
 		"Failed creating vulkan instance"
 	);
 
@@ -62,13 +64,15 @@ Meson::Vulkan::CInstance::CInstance(const std::string& title) {
 	);
 #endif
 
-	mpPhysicalDevice = new CVulkanPhysicalDevice(mInstance);
-	mpLogicalDevice = new CVulkanLogicalDevice(mpPhysicalDevice->Device());
+	mpSurface = new CVulkanSurface(pWindow, mInstance); // dont use raw vulkan types.. wrap them!
+	mpPhysicalDevice = new CVulkanPhysicalDevice(mInstance, mpSurface->Surface()); // dont use raw vulkan types.. wrap them!
+	mpLogicalDevice = new CVulkanLogicalDevice(mpPhysicalDevice->Device()); // dont use raw vulkan types.. wrap them!
 }
 
-Meson::Vulkan::CInstance::~CInstance() {
+Meson::Vulkan::CVulkanInstance::~CVulkanInstance() {
 	delete mpLogicalDevice;
 	delete mpPhysicalDevice;
+	delete mpSurface;
 
 #ifndef NDEBUG
 	MESON_TRACE_IF(
@@ -83,7 +87,7 @@ Meson::Vulkan::CInstance::~CInstance() {
 	vkDestroyInstance(mInstance, nullptr);
 }
 
-std::vector<const MsChar8*> Meson::Vulkan::CInstance::GetRequiredExtensions() {
+std::vector<const MsChar8*> Meson::Vulkan::CVulkanInstance::GetRequiredExtensions() {
 	MsUInt32 glfwExtensionCount = 0;
 
 	const MsChar8** glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
@@ -91,7 +95,7 @@ std::vector<const MsChar8*> Meson::Vulkan::CInstance::GetRequiredExtensions() {
 	return { glfwExtensions, glfwExtensions + glfwExtensionCount };
 }
 
-MsResult Meson::Vulkan::CInstance::CheckValidationLayerSupport() {
+MsResult Meson::Vulkan::CVulkanInstance::CheckValidationLayerSupport() {
 	MsUInt32 layerCount;
 
 	vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
@@ -99,11 +103,11 @@ MsResult Meson::Vulkan::CInstance::CheckValidationLayerSupport() {
 	std::vector<VkLayerProperties> availableLayers(layerCount);
 	vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
 
-	for (const auto* layerName : ActiveValidationLayers) {
+	for (const auto* pLayerName : ActiveValidationLayers) {
 		MsBool8 layerFound = false;
 
 		for (const auto& layerProperties : availableLayers) {
-			if (std::strcmp(layerName, layerProperties.layerName) == 0) {
+			if (std::strcmp(pLayerName, layerProperties.layerName) == 0) {
 				layerFound = true;
 
 				break;
