@@ -1,6 +1,7 @@
 #include "Vulkan/VulkanLogicalDevice.h"
 
-Meson::Vulkan::CVulkanLogicalDevice::CVulkanLogicalDevice(const VkPhysicalDevice& physicalDevice)
+Meson::Vulkan::CVulkanLogicalDevice::CVulkanLogicalDevice(
+	CVulkanPhysicalDevice& physicalDevice)
 	: mPhysicalDevice(physicalDevice) {
 	MESON_TRACE_IF(
 		CreateLogicalDevice() != MsResult::SUCCESS,
@@ -13,7 +14,7 @@ Meson::Vulkan::CVulkanLogicalDevice::~CVulkanLogicalDevice() {
 }
 
 MsResult Meson::Vulkan::CVulkanLogicalDevice::CreateLogicalDevice() {
-	SQueueFamilyIndices indices = CVulkanPhysicalDevice::FindQueueFamilies(mPhysicalDevice);
+	SQueueFamilyIndices indices = mPhysicalDevice.FindQueueFamilies(mPhysicalDevice.Device());
 
 	VkDeviceQueueCreateInfo queueCreateInfo{};
 	queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
@@ -39,11 +40,13 @@ MsResult Meson::Vulkan::CVulkanLogicalDevice::CreateLogicalDevice() {
 	deviceCreateInfo.ppEnabledLayerNames = ActiveValidationLayers.data();
 #endif
 
-	MESON_TRACE_IF_RETURN(
-		vkCreateDevice(mPhysicalDevice, &deviceCreateInfo, nullptr, &mDevice) != VkResult::VK_SUCCESS,
-		"Failed creating logical device",
-		MsResult::FAILED
-	);
+	if (vkCreateDevice(
+		mPhysicalDevice.Device(),
+		&deviceCreateInfo,
+		nullptr,
+		&mDevice) != VkResult::VK_SUCCESS) {
+		return MsResult::FAILED;
+	}
 
 	vkGetDeviceQueue(mDevice, indices.graphicsFamily.value(), 0, &mQueue);
 

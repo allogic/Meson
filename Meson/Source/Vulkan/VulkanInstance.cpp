@@ -1,6 +1,6 @@
 #include "Vulkan/VulkanInstance.h"
 
-Meson::Vulkan::CVulkanInstance::CVulkanInstance(GLFWwindow* pWindow, const std::string& title) {
+Meson::Vulkan::CVulkanInstance::CVulkanInstance(const Glfw::CGlfwWindow& window) {
 #ifndef NDEBUG
 	MESON_TRACE_IF(
 		CheckValidationLayerSupport() == MsResult::FAILED,
@@ -10,9 +10,9 @@ Meson::Vulkan::CVulkanInstance::CVulkanInstance(GLFWwindow* pWindow, const std::
 
 	VkApplicationInfo appInfo{};
 	appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
-	appInfo.pApplicationName = title.c_str();
+	appInfo.pApplicationName = window.Title().c_str();
 	appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
-	appInfo.pEngineName = title.c_str();
+	appInfo.pEngineName = window.Title().c_str();
 	appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
 	appInfo.apiVersion = VK_API_VERSION_1_0;
 
@@ -60,27 +60,19 @@ Meson::Vulkan::CVulkanInstance::CVulkanInstance(GLFWwindow* pWindow, const std::
 			mInstance,
 			&mDebugUtilsMessageCreateInfoExt,
 			nullptr) != MsResult::SUCCESS,
-		"Failed mapping debug messenger"
+		"Failed creating debug messenger"
 	);
 #endif
-
-	mpSurface = new CVulkanSurface(pWindow, mInstance); // dont use raw vulkan types.. wrap them!
-	mpPhysicalDevice = new CVulkanPhysicalDevice(mInstance, mpSurface->Surface()); // dont use raw vulkan types.. wrap them!
-	mpLogicalDevice = new CVulkanLogicalDevice(mpPhysicalDevice->Device()); // dont use raw vulkan types.. wrap them!
 }
 
 Meson::Vulkan::CVulkanInstance::~CVulkanInstance() {
-	delete mpLogicalDevice;
-	delete mpPhysicalDevice;
-	delete mpSurface;
-
 #ifndef NDEBUG
 	MESON_TRACE_IF(
 		mValidationLayer.DestroyDebugUtilsMessengerExtension(
 			mInstance,
 			&mDebugUtilsMessageCreateInfoExt,
 			nullptr) != MsResult::SUCCESS,
-		"Failed mapping debug messenger"
+		"Failed destroying debug messenger"
 	);
 #endif
 

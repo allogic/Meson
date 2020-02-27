@@ -4,9 +4,7 @@
 #include "../Types.h"
 #include "../ResultCodes.h"
 
-#include "VulkanPhysicalDevice.h"
-#include "VulkanLogicalDevice.h"
-#include "VulkanSurface.h"
+#include "../Glfw/GlfwWindow.h"
 
 #ifndef NDEBUG
 #include "VulkanValidationLayers.h"
@@ -30,18 +28,17 @@ static VkBool32 VKAPI_CALL MsVkDebugCallback(
 namespace Meson::Vulkan {
 	class CVulkanInstance final {
 	public:
-		CVulkanInstance(GLFWwindow* pWindow, const std::string& title);
+		CVulkanInstance(const Glfw::CGlfwWindow& window);
 		~CVulkanInstance();
+
+	public:
+		inline const VkInstance& Instance() const { return mInstance; }
 
 	private:
 		std::vector<const MsChar8*> GetRequiredExtensions();
 
 	private:
 		VkInstance mInstance;
-
-		CVulkanPhysicalDevice* mpPhysicalDevice;
-		CVulkanLogicalDevice* mpLogicalDevice;
-		CVulkanSurface* mpSurface;
 
 #ifndef NDEBUG
 	private:

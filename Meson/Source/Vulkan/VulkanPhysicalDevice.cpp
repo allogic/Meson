@@ -1,6 +1,8 @@
 #include "Vulkan/VulkanPhysicalDevice.h"
 
-Meson::Vulkan::CVulkanPhysicalDevice::CVulkanPhysicalDevice(const VkInstance& instance, const VkSurfaceKHR& surface)
+Meson::Vulkan::CVulkanPhysicalDevice::CVulkanPhysicalDevice(
+	const CVulkanInstance& instance,
+	const CVulkanSurface& surface)
 	: mInstance(instance)
 	, mSurface(surface) {
 	MESON_TRACE_IF(
@@ -14,7 +16,8 @@ Meson::Vulkan::CVulkanPhysicalDevice::CVulkanPhysicalDevice(const VkInstance& in
 	);
 }
 
-Meson::Vulkan::SQueueFamilyIndices Meson::Vulkan::CVulkanPhysicalDevice::FindQueueFamilies(VkPhysicalDevice device) {
+Meson::Vulkan::SQueueFamilyIndices Meson::Vulkan::CVulkanPhysicalDevice::FindQueueFamilies(
+	VkPhysicalDevice device) {
 	SQueueFamilyIndices indices;
 
 	MsUInt32 queueFamilyCount = 0;
@@ -30,11 +33,11 @@ Meson::Vulkan::SQueueFamilyIndices Meson::Vulkan::CVulkanPhysicalDevice::FindQue
 			indices.graphicsFamily = i;
 
 		VkBool32 presentSupport = false;
-		vkGetPhysicalDeviceSurfaceSupportKHR(mDevice, i, mSurface, &presentSupport);
+		vkGetPhysicalDeviceSurfaceSupportKHR(mDevice, i, mSurface.Surface(), &presentSupport);
 
-		if (presentSupport) indices.presentFamily = i;
+		//if (presentSupport) indices.presentFamily = i;
 
-		if (indices.Complete()) break;
+		//if (indices.Complete()) break;
 
 		i++;
 	}
@@ -44,12 +47,12 @@ Meson::Vulkan::SQueueFamilyIndices Meson::Vulkan::CVulkanPhysicalDevice::FindQue
 
 MsResult Meson::Vulkan::CVulkanPhysicalDevice::GetPhysicalDevices() {
 	MsUInt32 deviceCount;
-	vkEnumeratePhysicalDevices(mInstance, &deviceCount, nullptr);
+	vkEnumeratePhysicalDevices(mInstance.Instance(), &deviceCount, nullptr);
 
 	if (deviceCount == 0) return MsResult::FAILED;
 
 	mDevices.resize(deviceCount);
-	vkEnumeratePhysicalDevices(mInstance, &deviceCount, mDevices.data());
+	vkEnumeratePhysicalDevices(mInstance.Instance(), &deviceCount, mDevices.data());
 
 	return MsResult::SUCCESS;
 }

@@ -15,14 +15,14 @@
 namespace Meson::Vulkan {
 	class CVulkanLogicalDevice final {
 	public:
-		CVulkanLogicalDevice(const VkPhysicalDevice& physicalDevice);
+		CVulkanLogicalDevice(CVulkanPhysicalDevice& physicalDevice);
 		~CVulkanLogicalDevice();
 
 	private:
 		MsResult CreateLogicalDevice();
 
 	private:
-		const VkPhysicalDevice& mPhysicalDevice;
+		CVulkanPhysicalDevice& mPhysicalDevice;
 
 		VkDevice mDevice;
 		VkQueue mQueue;

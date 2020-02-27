@@ -4,6 +4,9 @@
 #include "../Core.h"
 #include "../ResultCodes.h"
 
+#include "VulkanInstance.h"
+#include "VulkanSurface.h"
+
 #include <vulkan/vulkan.h>
 
 namespace Meson::Vulkan {
@@ -11,7 +14,7 @@ namespace Meson::Vulkan {
 		std::optional<MsUInt32> graphicsFamily;
 		std::optional<MsUInt32> presentFamily;
 
-		inline bool Complete() const {
+		inline MsBool8 Complete() const {
 			return
 				graphicsFamily.has_value() &&
 				presentFamily.has_value();
@@ -20,7 +23,7 @@ namespace Meson::Vulkan {
 
 	class CVulkanPhysicalDevice final {
 	public:
-		CVulkanPhysicalDevice(const VkInstance& instance, const VkSurfaceKHR& surface);
+		CVulkanPhysicalDevice(const CVulkanInstance& instance, const CVulkanSurface& surface);
 
 	public:
 		inline const VkPhysicalDevice& Device() const { return mDevice; }
@@ -34,8 +37,8 @@ namespace Meson::Vulkan {
 		MsResult CheckQueueFamilies(VkPhysicalDevice device);
 
 	private:
-		const VkInstance& mInstance;
-		const VkSurfaceKHR& mSurface;
+		const CVulkanInstance& mInstance;
+		const CVulkanSurface& mSurface;
 
 		std::vector<VkPhysicalDevice> mDevices;
 

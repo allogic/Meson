@@ -7,22 +7,21 @@
 #define VK_USE_PLATFORM_WIN32_KHR
 #include <vulkan/vulkan.h>
 
-#include <glfw/glfw3.h>
+#include "../Glfw/GlfwWindow.h"
 
-#define GLFW_EXPOSE_NATIVE_WIN32
-#include <glfw/glfw3native.h>
+#include "VulkanInstance.h"
 
 namespace Meson::Vulkan {
 	class CVulkanSurface final {
 	public:
-		CVulkanSurface(GLFWwindow* window, const VkInstance& instance);
+		CVulkanSurface(const Glfw::CGlfwWindow& window, const CVulkanInstance& instance);
 		~CVulkanSurface();
 
 	public:
 		inline const VkSurfaceKHR& Surface() const { return mSurface; }
 
 	private:
-		const VkInstance& mInstance;
+		const CVulkanInstance& mInstance;
 
 		VkSurfaceKHR mSurface;
 	};

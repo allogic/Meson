@@ -5,6 +5,9 @@
 
 #include <glfw/glfw3.h>
 
+#define GLFW_EXPOSE_NATIVE_WIN32
+#include <glfw/glfw3native.h>
+
 namespace Meson::Glfw {
 	class CGlfwWindow final {
 	public:
@@ -12,9 +15,17 @@ namespace Meson::Glfw {
 		~CGlfwWindow();
 
 	public:
-		inline auto* Ptr() const { return mpWindow; }
+		inline GLFWwindow* Window() const { return mpWindow; }
+		inline const MsUInt32 Width() const { return mWidth; }
+		inline const MsUInt32 Height() const { return mWidth; }
+		inline const std::string& Title() const { return mTitle; }
 
 	private:
 		GLFWwindow* mpWindow;
+
+		MsUInt32 mWidth;
+		MsUInt32 mHeight;
+
+		const std::string mTitle;
 	};
 }
