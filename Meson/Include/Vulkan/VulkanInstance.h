@@ -6,24 +6,21 @@
 
 #include "../Glfw/GlfwWindow.h"
 
-#ifndef NDEBUG
-#include "VulkanValidationLayers.h"
 #include "VulkanValidationLayer.h"
+
+#include <vulkan/vulkan.h>
+
+#include <glfw/glfw3.h>
 
 static VkBool32 VKAPI_CALL MsVkDebugCallback(
 	VkDebugUtilsMessageSeverityFlagBitsEXT messeageSeverity,
 	VkDebugUtilsMessageTypeFlagsEXT messageType,
 	const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
-	void* pserData) {
+	void* pUserData) {
 	MESON_TRACE(pCallbackData->pMessage);
 
 	return VK_FALSE;
 }
-#endif
-
-#include <vulkan/vulkan.h>
-
-#include <glfw/glfw3.h>
 
 namespace Meson::Vulkan {
 	class CVulkanInstance final {
@@ -35,18 +32,16 @@ namespace Meson::Vulkan {
 		inline const VkInstance& Instance() const { return mInstance; }
 
 	private:
+		MsResult CheckValidationLayerSupport();
+		MsResult CreateVulkanInstace();
 		std::vector<const MsChar8*> GetRequiredExtensions();
 
 	private:
+		const Glfw::CGlfwWindow& mWindow;
+
 		VkInstance mInstance;
 
-#ifndef NDEBUG
-	private:
-		MsResult CheckValidationLayerSupport();
-
-	private:
 		VkDebugUtilsMessengerCreateInfoEXT mDebugUtilsMessageCreateInfoExt;
 		CValidationLayer mValidationLayer;
-#endif
 	};
 }

@@ -42,16 +42,13 @@
     <ClInclude Include="Include\ResultCodes.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Vulkan\VulkanPhysicalDevice.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Vulkan\VulkanLogicalDevice.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\Vulkan\VulkanValidationLayers.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Include\Vulkan\VulkanSurface.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Vulkan\VulkanDevice.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Vulkan\VulkanQueueFamilies.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -68,13 +65,10 @@
     <ClCompile Include="Source\Glfw\GlfwWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Vulkan\VulkanPhysicalDevice.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Vulkan\VulkanLogicalDevice.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Vulkan\VulkanSurface.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Vulkan\VulkanDevice.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

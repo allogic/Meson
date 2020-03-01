@@ -4,27 +4,35 @@ Meson::Glfw::CGlfwWindow::CGlfwWindow(MsUInt32 width, MsUInt32 height, const std
 	: mWidth(width)
 	, mHeight(height)
 	, mTitle(title) {
-	MESON_TRACE_IF(
-		glfwInit() == GLFW_FALSE,
-		"Failed initialising glfw"
+	MESON_TRACE_IF_RETURN(
+		CreateGlfwContext() != MsResult::SUCCESS,
+		"Failed creating glfw context"
 	);
-
-	glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-
-	mpWindow = glfwCreateWindow(
-		static_cast<MsInt32>(width),
-		static_cast<MsInt32>(height),
-		title.c_str(),
-		nullptr,
-		nullptr
-	);
-
-	glfwMakeContextCurrent(mpWindow);
 }
 
 Meson::Glfw::CGlfwWindow::~CGlfwWindow() {
 	glfwDestroyWindow(mpWindow);
 
 	glfwTerminate();
+}
+
+MsResult Meson::Glfw::CGlfwWindow::CreateGlfwContext() {
+	if (glfwInit() == GLFW_FALSE) return MsResult::FAILED;
+
+	glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+
+	mpWindow = glfwCreateWindow(
+		static_cast<MsInt32>(mWidth),
+		static_cast<MsInt32>(mHeight),
+		mTitle.c_str(),
+		nullptr,
+		nullptr
+	);
+
+	if (!mpWindow) return MsResult::FAILED;
+
+	glfwMakeContextCurrent(mpWindow);
+
+	return MsResult::SUCCESS;
 }

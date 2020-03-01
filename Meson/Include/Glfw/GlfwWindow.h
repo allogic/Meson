@@ -2,6 +2,7 @@
 
 #include "../Core.h"
 #include "../Types.h"
+#include "../ResultCodes.h"
 
 #include <glfw/glfw3.h>
 
@@ -19,6 +20,9 @@ namespace Meson::Glfw {
 		inline const MsUInt32 Width() const { return mWidth; }
 		inline const MsUInt32 Height() const { return mWidth; }
 		inline const std::string& Title() const { return mTitle; }
+
+	private:
+		MsResult CreateGlfwContext();
 
 	private:
 		GLFWwindow* mpWindow;

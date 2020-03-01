@@ -8,26 +8,37 @@
 
 #include "Vulkan/VulkanInstance.h"
 #include "Vulkan/VulkanSurface.h"
-#include "Vulkan/VulkanPhysicalDevice.h"
-#include "Vulkan/VulkanLogicalDevice.h"
+#include "Vulkan/VulkanDevice.h"
 
 int main(MsInt32 argc, MsChar8** argv);
 
 namespace Meson {
+	struct SApplicationInfo {
+		MsUInt32 width;
+		MsUInt32 height;
+		std::string title;
+	};
+
 	class CApplication {
 	public:
-		CApplication(MsUInt32 width, MsUInt32 height, const std::string& title);
+		CApplication(const SApplicationInfo& appInfo);
 		~CApplication();
 
 	public:
 		MsResult Run();
 
 	private:
+		MsResult CreateApplicationContext();
+
+	private:
+		SApplicationInfo mAppInfo;
+
 		Glfw::CGlfwWindow* mpGlfwWindow = nullptr;
 
 		Vulkan::CVulkanInstance* mpVulkanInstance = nullptr;
-		Vulkan::CVulkanSurface* mpSurface = nullptr;
-		Vulkan::CVulkanPhysicalDevice* mpPhysicalDevice = nullptr;
-		Vulkan::CVulkanLogicalDevice* mpLogicalDevice = nullptr;
+		Vulkan::CVulkanSurface* mpVulkanSurface = nullptr;
+		Vulkan::CVulkanDevice* mpVulkanDevice = nullptr;
+
+		bool mRunnable = false;
 	};
 }

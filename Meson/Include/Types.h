@@ -1,24 +1,24 @@
 #pragma once
 
-typedef unsigned char MsBool8;
-typedef unsigned short MsBool16;
-typedef unsigned long MsBool32;
+using MsBool8 = unsigned char;
+using MsBool16 = unsigned short;
+using MsBool32 = unsigned long;
 
-typedef char MsChar8;
-typedef short MsChar16;
-typedef long MsChar32;
+using MsChar8 = char;
+using MsChar16 = short;
+using MsChar32 = long;
 
-typedef unsigned char MsUChar8;
-typedef unsigned short MsUChar16;
-typedef unsigned long MsUChar32;
+using MsUChar8 = unsigned char;
+using MsUChar16 = unsigned short;
+using MsUChar32 = unsigned long;
 
-typedef char MsInt8;
-typedef short MsInt16;
-typedef int MsInt32;
+using MsInt8 = char;
+using MsInt16 = short;
+using MsInt32 = int;
 
-typedef unsigned char MsUInt8;
-typedef unsigned short MsUInt16;
-typedef unsigned int MsUInt32;
+using MsUInt8 = unsigned char;
+using MsUInt16 = unsigned short;
+using MsUInt32 = unsigned int;
 
-typedef float MsFloat32;
-typedef double MsFloat64;
+using MsFloat32 = float;
+using MsFloat64 = double;

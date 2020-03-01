@@ -25,7 +25,7 @@ namespace Meson::Vulkan {
 			const VkAllocationCallbacks* pAllocator
 		);
 
-		inline VkDebugUtilsMessengerEXT& GetDebugUtilsMessengerPtr() { return mpDebugMessenger; }
+		inline VkDebugUtilsMessengerEXT& GetDebugUtilsMessenger() { return mpDebugMessenger; }
 
 	private:
 		VkDebugUtilsMessengerEXT mpDebugMessenger = nullptr;
