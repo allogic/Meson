@@ -9,6 +9,7 @@ Meson::CApplication::CApplication(const SApplicationInfo& appInfo)
 }
 
 Meson::CApplication::~CApplication() {
+	delete mpVulkanSwapChain;
 	delete mpVulkanDevice;
 	delete mpVulkanSurface;
 	delete mpVulkanInstance;
@@ -32,6 +33,7 @@ MsResult Meson::CApplication::CreateApplicationContext() {
 	if (mpVulkanInstance = new Vulkan::CVulkanInstance(*mpGlfwWindow); !mpVulkanInstance) return MsResult::FAILED;
 	if (mpVulkanSurface = new Vulkan::CVulkanSurface(*mpGlfwWindow, *mpVulkanInstance); !mpVulkanSurface) return MsResult::FAILED;
 	if (mpVulkanDevice = new Vulkan::CVulkanDevice(*mpVulkanInstance, *mpVulkanSurface); !mpVulkanDevice) return MsResult::FAILED;
+	if (mpVulkanSwapChain = new Vulkan::CVulkanSwapChain(); !mpVulkanSwapChain) return MsResult::FAILED;
 
 	mRunnable = true;
 

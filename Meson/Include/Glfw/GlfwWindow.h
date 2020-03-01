@@ -1,8 +1,6 @@
 #pragma once
 
 #include "../Core.h"
-#include "../Types.h"
-#include "../ResultCodes.h"
 
 #include <glfw/glfw3.h>
 

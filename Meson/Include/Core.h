@@ -1,10 +1,14 @@
 #pragma once
 
 #include "Types.h"
+#include "ResultCodes.h"
+
+#include <vulkan/vulkan_core.h>
 
 #include <cstdlib>
 #include <array>
 #include <vector>
+#include <set>
 #include <iostream>
 #include <string>
 #include <chrono>
@@ -24,10 +28,15 @@
 constexpr const MsBool8 IsDebugEnabled = false;
 
 constexpr std::array<const MsChar8*, 0> ValidationLayers{};
+constexpr std::array<const MsChar8*, 0> DeviceExtensions{};
 #else
 constexpr const MsBool8 IsDebugEnabled = true;
 
 constexpr std::array<const MsChar8*, 1> ValidationLayers{
 	"VK_LAYER_KHRONOS_validation",
+};
+
+constexpr std::array<const MsChar8*, 1> DeviceExtensions{
+	VK_KHR_SWAPCHAIN_EXTENSION_NAME,
 };
 #endif

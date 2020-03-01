@@ -1,14 +1,13 @@
 #pragma once
 
-#include "Types.h"
 #include "Core.h"
-#include "ResultCodes.h"
 
 #include "Glfw/GlfwWindow.h"
 
 #include "Vulkan/VulkanInstance.h"
 #include "Vulkan/VulkanSurface.h"
 #include "Vulkan/VulkanDevice.h"
+#include "Vulkan/VulkanSwapChain.h"
 
 int main(MsInt32 argc, MsChar8** argv);
 
@@ -38,6 +37,7 @@ namespace Meson {
 		Vulkan::CVulkanInstance* mpVulkanInstance = nullptr;
 		Vulkan::CVulkanSurface* mpVulkanSurface = nullptr;
 		Vulkan::CVulkanDevice* mpVulkanDevice = nullptr;
+		Vulkan::CVulkanSwapChain* mpVulkanSwapChain = nullptr;
 
 		bool mRunnable = false;
 	};

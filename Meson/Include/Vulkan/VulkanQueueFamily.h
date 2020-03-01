@@ -1,13 +1,11 @@
 #pragma once
 
-#include "../Types.h"
 #include "../Core.h"
-#include "../ResultCodes.h"
 
 namespace Meson::Vulkan {
-	class CVulkanQueueFamilies final {
+	class CVulkanQueueFamily final {
 	public:
-		CVulkanQueueFamilies() = default;
+		CVulkanQueueFamily() = default;
 
 	public:
 		inline MsBool8 Complete() const {

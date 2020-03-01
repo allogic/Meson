@@ -1,12 +1,10 @@
 #pragma once
 
-#include "../Types.h"
 #include "../Core.h"
-#include "../ResultCodes.h"
 
 #include "VulkanInstance.h"
 #include "VulkanSurface.h"
-#include "VulkanQueueFamilies.h"
+#include "VulkanQueueFamily.h"
 
 #include <vulkan/vulkan.h>
 
@@ -22,7 +20,8 @@ namespace Meson::Vulkan {
 		MsResult CreateLogicalDevice();
 
 	private:
-		CVulkanQueueFamilies GetQueueFamilies(const VkPhysicalDevice& device);
+		CVulkanQueueFamily GetQueueFamilies(const VkPhysicalDevice& device);
+		MsBool8 GetExtensionSupport(const VkPhysicalDevice& device);
 
 	private:
 		const CVulkanInstance& mInstance;
@@ -30,7 +29,7 @@ namespace Meson::Vulkan {
 
 		std::vector<VkPhysicalDevice> mPhysicalDevices;
 
-		CVulkanQueueFamilies mQueueFamilies;
+		CVulkanQueueFamily mQueueFamily;
 		VkPhysicalDevice mPhysicalDevice;
 
 		VkDevice mDevice;

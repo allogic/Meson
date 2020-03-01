@@ -9,9 +9,7 @@
 *  write custom allocator for vulkan like types and or internals
 */
 
-#include "Types.h"
 #include "Core.h"
-
 #include "Application.h"
 
 extern Meson::CApplication* Create();

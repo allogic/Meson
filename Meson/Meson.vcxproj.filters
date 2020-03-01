@@ -36,9 +36,6 @@
     <ClInclude Include="Include\Vulkan\VulkanValidationLayer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Utils.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Include\ResultCodes.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -48,7 +45,10 @@
     <ClInclude Include="Include\Vulkan\VulkanDevice.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Vulkan\VulkanQueueFamilies.h">
+    <ClInclude Include="Include\Vulkan\VulkanSwapChain.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Vulkan\VulkanQueueFamily.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

@@ -27,9 +27,9 @@ Meson::Vulkan::CVulkanDevice::~CVulkanDevice() {
 
 MsResult Meson::Vulkan::CVulkanDevice::SelectPhysicalDevice() {
 	for (const auto& device : mPhysicalDevices) {
-		mQueueFamilies = GetQueueFamilies(device);
+		mQueueFamily = GetQueueFamilies(device);
 
-		if (mQueueFamilies.Complete()) {
+		if (mQueueFamily.Complete()) {
 			mPhysicalDevice = device;
 
 			return MsResult::SUCCESS;
@@ -39,8 +39,8 @@ MsResult Meson::Vulkan::CVulkanDevice::SelectPhysicalDevice() {
 	return MsResult::FAILED;
 }
 
-Meson::Vulkan::CVulkanQueueFamilies Meson::Vulkan::CVulkanDevice::GetQueueFamilies(const VkPhysicalDevice& device) {
-	CVulkanQueueFamilies queueFamilies;
+Meson::Vulkan::CVulkanQueueFamily Meson::Vulkan::CVulkanDevice::GetQueueFamilies(const VkPhysicalDevice& device) {
+	CVulkanQueueFamily queueFamily;
 
 	MsUInt32 familyCount = 0;
 	vkGetPhysicalDeviceQueueFamilyProperties(device, &familyCount, nullptr);
@@ -51,19 +51,34 @@ Meson::Vulkan::CVulkanQueueFamilies Meson::Vulkan::CVulkanDevice::GetQueueFamili
 	MsUInt32 i = 0;
 
 	for (const auto& family : families) {
-		if (family.queueFlags & VK_QUEUE_GRAPHICS_BIT) queueFamilies.GraphicsFamily(i);
+		if (family.queueFlags & VK_QUEUE_GRAPHICS_BIT) queueFamily.GraphicsFamily(i);
 
 		VkBool32 presentSupport = false;
 		vkGetPhysicalDeviceSurfaceSupportKHR(device, i, mSurface.Surface(), &presentSupport);
 
-		if (presentSupport) queueFamilies.PresentationFamily(i);
+		if (presentSupport) queueFamily.PresentationFamily(i);
 
-		if (queueFamilies.Complete()) break;
+		if (queueFamily.Complete()) break;
 
 		i++;
 	}
 
-	return queueFamilies;
+	return queueFamily;
+}
+
+MsBool8 Meson::Vulkan::CVulkanDevice::GetExtensionSupport(const VkPhysicalDevice& device) {
+	MsUInt32 extensionCount = 0;
+	vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, nullptr);
+
+	std::vector<VkExtensionProperties> extensions(extensionCount);
+	vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, extensions.data());
+
+	std::set<std::string> requiredExtensions(DeviceExtensions.begin(), DeviceExtensions.end());
+
+	for (const auto& extension : extensions)
+		requiredExtensions.erase(extension.extensionName);
+
+	return requiredExtensions.empty();
 }
 
 MsResult Meson::Vulkan::CVulkanDevice::GetPhysicalDevices() {
@@ -81,7 +96,7 @@ MsResult Meson::Vulkan::CVulkanDevice::GetPhysicalDevices() {
 MsResult Meson::Vulkan::CVulkanDevice::CreateLogicalDevice() {
 	VkDeviceQueueCreateInfo queueCreateInfo{};
 	queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-	queueCreateInfo.queueFamilyIndex = mQueueFamilies.GraphicsFamily();
+	queueCreateInfo.queueFamilyIndex = mQueueFamily.GraphicsFamily();
 	queueCreateInfo.queueCount = 1;
 
 	MsFloat32 queuePriority = 1.f;
@@ -112,7 +127,7 @@ MsResult Meson::Vulkan::CVulkanDevice::CreateLogicalDevice() {
 		return MsResult::FAILED;
 	}
 
-	vkGetDeviceQueue(mDevice, mQueueFamilies.GraphicsFamily(), 0, &mQueue);
+	vkGetDeviceQueue(mDevice, mQueueFamily.GraphicsFamily(), 0, &mQueue);
 
 	return MsResult::SUCCESS;
 }

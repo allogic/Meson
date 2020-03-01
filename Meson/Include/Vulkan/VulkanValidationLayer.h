@@ -1,8 +1,6 @@
 #pragma once
 
-#include "../Types.h"
 #include "../Core.h"
-#include "../ResultCodes.h"
 
 #include <vulkan/vulkan.h>
 

@@ -153,10 +153,10 @@
     <ClInclude Include="Include\Meson.h" />
     <ClInclude Include="Include\ResultCodes.h" />
     <ClInclude Include="Include\Types.h" />
-    <ClInclude Include="Include\Utils.h" />
     <ClInclude Include="Include\Vulkan\VulkanDevice.h" />
-    <ClInclude Include="Include\Vulkan\VulkanQueueFamilies.h" />
+    <ClInclude Include="Include\Vulkan\VulkanQueueFamily.h" />
     <ClInclude Include="Include\Vulkan\VulkanSurface.h" />
+    <ClInclude Include="Include\Vulkan\VulkanSwapChain.h" />
     <ClInclude Include="Include\Vulkan\VulkanValidationLayer.h" />
     <ClInclude Include="Include\Vulkan\VulkanInstance.h" />
     <ClInclude Include="Include\Glfw\GlfwWindow.h" />
